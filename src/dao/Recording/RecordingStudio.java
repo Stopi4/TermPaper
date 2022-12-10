@@ -16,30 +16,12 @@ import Model.Compositions.Composition;
 
 
 public class RecordingStudio {
-//    private Composition composition;
-//    private List<Composition> compositions;
-//    private List<String> assemblageNames;
 
-//    public Composition getComposition() {
-//        return composition;
-//    }
-
-//    public List<Composition> getCompositions() {
-//        return compositions;
-//    }
 
     public static Connection getConnection() {
         return connection;
     }
-//    private static Composition composition;
-//    private static HashMap<String, LinkedList<Composition>> collections;
 
-//    private static final String USER = "postgres";
-//    private static final String PASSWORD = "1234";
-//    private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
-
-//    private static final String URL = "jdbc:sqlserver://DESKTOP-3096NSM\\SQLEXPRESS"; // DESKTOP-3096NSM\SQLEXPRESS
-//    private static final String URL = "jdbc:sqlserver://DESKTOP-3096NSM\\stepa;"
     private static final String URL = "jdbc:sqlserver://DESKTOP-3096NSM:1433;"
                                       + "databaseName=TermPaper;"+"integratedSecurity=true;encrypt=true;trustServerCertificate=true;";
     private static final String USER = "stepa";
