@@ -14,7 +14,7 @@ public class Test {
         }
     }
     public static void main(String[] args) {
-        JFrame jFrame = new JFrame("Test");
+        JFrame jFrame = new JFrame("test");
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
         jFrame.setBounds(dimension.width/2 - 500/2, dimension.height/2 - 400/2, 200, 100);

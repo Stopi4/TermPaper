@@ -1,8 +1,7 @@
 package Model.Compositions;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.LinkedList;
+import java.util.List;
 
 //@Entity
 public class Composition {
@@ -18,7 +17,7 @@ public class Composition {
     //    @NotEmpty(message = "Genre should not be empty")
 //    @Size(min = 2, max = 30, message = "Genre should be between 2 and 30 characters")
 //    @NotNull
-    private LinkedList<String> genres;
+    private List<String> genres;
     private String assemblageName;
     private String performer;
 
@@ -79,11 +78,11 @@ public class Composition {
         this.performer = performer;
     }
 
-    public LinkedList<String> getGenres() {
+    public List<String> getGenres() {
         return genres;
     }
 
-    public void setGenres(LinkedList<String> genres) {
+    public void setGenres(List<String> genres) {
         this.genres = genres;
     }
 }

@@ -1,9 +1,7 @@
-import Commands.SelectAssemblageCommand;
-import Commands.SelectByIdCommand;
 import Model.Compositions.Composition;
 import dao.Recording.RecordingStudio;
 
-import java.awt.*;
+import java.util.List;
 import java.util.Scanner;
 import Menu.Menu;
 
@@ -54,9 +52,11 @@ public class Main {
 
 
 
-        RecordingStudio recordingStudio = new RecordingStudio();
-
-        recordingStudio.test0();
+//        RecordingStudio recordingStudio = new RecordingStudio();
+//
+//        List<Composition> assemblage = recordingStudio.test2("Led Zeppelin IV");
+//        for (Composition el : assemblage)
+//            System.out.println(el);
 
 //        System.out.println(" Введіть команду 'Command':");
 //        System.out.println(" > ");
@@ -64,7 +64,8 @@ public class Main {
 //            System.out.println(" Введена неправильна команда!");
 //            System.out.println(" > ");
 //        }
-//        Menu.startMenu2();
+        Menu menu = new Menu();
+        menu.startMenu2();
     }
 }
 

@@ -1,16 +1,20 @@
 package Commands;
 
+import Exceptions.VariableIsNull;
+import Exceptions.StatementDontReturnValueException;
+import Menu.Editor;
 import Model.Compositions.Composition;
 import dao.Recording.RecordingStudio;
 
 import java.util.List;
 
-public class SelectAssemblageCommand implements Command{
+public class SelectAssemblageCommand extends Command{
     private RecordingStudio recordingStudio = new RecordingStudio();
     private String assemblageName = null;
     private List<Composition> assemblage;
 
-    public SelectAssemblageCommand(String assemblageName){
+    public SelectAssemblageCommand(Editor editor, String assemblageName){
+        super(editor);
         this.assemblageName = assemblageName;
     }
 
@@ -18,10 +22,13 @@ public class SelectAssemblageCommand implements Command{
 //        this.assemblageName = assemblageName;
 //    }
     @Override
-    public boolean execute() {
+    public boolean execute() throws StatementDontReturnValueException, VariableIsNull {
         if(assemblageName == null)
             return false;
-        assemblage = recordingStudio.test2(assemblageName);
+        assemblage = recordingStudio.getAssemblage(assemblageName);
+        if(assemblage == null)
+            return false;
+        editor.setCompositions(assemblage);
         return true;
     }
     public List<Composition> getAssemblage() {
