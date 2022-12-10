@@ -1,5 +1,8 @@
 package Commands;
 
+import Exceptions.StatementDontReturnValueException;
+import Exceptions.VariableIsNull;
+import Exceptions.ZeroRowChangedException;
 import Menu.Editor;
 import dao.Recording.RecordingStudio;
 
@@ -13,7 +16,7 @@ public class DeleteAssemblageCommand extends Command{
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute() throws StatementDontReturnValueException, VariableIsNull, ZeroRowChangedException {
         if(assemblageName == null)
             return false;
         if(!recordingStudio.isCollectionExist(assemblageName))

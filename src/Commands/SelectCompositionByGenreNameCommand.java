@@ -1,26 +1,23 @@
 package Commands;
 
 import Exceptions.StatementDontReturnValueException;
-import Menu.Menu;
+import Menu.Editor;
 import Model.Compositions.Composition;
 import dao.Recording.RecordingStudio;
-import Menu.Editor;
 
 import java.util.List;
 
-public class SelectCompositionsByDurationCommand extends Command{
+public class SelectCompositionByGenreNameCommand extends  Command{
     private RecordingStudio recordingStudio = new RecordingStudio();
-    private List<Composition> compositions = null;
-    private double d1, d2;
-
-    public SelectCompositionsByDurationCommand(Editor editor, double d1, double d2){
+    private List<Composition> compositions;
+    private String genreName;
+    public SelectCompositionByGenreNameCommand(Editor editor, String genreName) {
         super(editor);
-        this.d1 = d1;
-        this.d2 = d2;
+        this.genreName = genreName;
     }
     @Override
     public boolean execute() throws StatementDontReturnValueException {
-        compositions = recordingStudio.getCompositionsByDuration(d1, d2);
+        compositions = recordingStudio.getCompositionsByGenreName(genreName);
         if(compositions == null)
             return false;
         editor.setCompositions(compositions);

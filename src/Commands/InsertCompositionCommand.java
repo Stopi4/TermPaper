@@ -7,11 +7,11 @@ import Menu.Editor;
 import Model.Compositions.Composition;
 import dao.Recording.RecordingStudio;
 
-public class InsertCommand extends Command{
+public class InsertCompositionCommand extends Command{
     private RecordingStudio recordingStudio = new RecordingStudio();
     private Composition composition = null;
 
-    public InsertCommand(Editor editor, Composition composition) {
+    public InsertCompositionCommand(Editor editor, Composition composition) {
         super(editor);
         this.composition = composition;
     }

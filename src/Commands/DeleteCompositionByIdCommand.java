@@ -1,22 +1,24 @@
 package Commands;
 
+import Exceptions.ZeroRowChangedException;
 import Menu.Editor;
 import dao.Recording.RecordingStudio;
 
-public class DeleteCompositionFromAssemblageCommand extends Command{
+public class DeleteCompositionByIdCommand extends Command{
     private RecordingStudio recordingStudio = new RecordingStudio();
     private int compositionId;
 
-    public DeleteCompositionFromAssemblageCommand(Editor editor, int compositionId) {
+    public DeleteCompositionByIdCommand(Editor editor, int compositionId) {
         super(editor);
         this.compositionId = compositionId;
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute() throws ZeroRowChangedException {
 //        if(!recordingStudio.isCollectionExist(assemblageName))
 //            return false;
-//        recordingStudio.deleteAssemblage(assemblageName);
+        recordingStudio.deleteCompositionById(compositionId);
+
         return true;
     }
 }

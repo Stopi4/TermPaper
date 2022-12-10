@@ -1,20 +1,19 @@
 package test;
 
 import Commands.Command;
-import Commands.SelectByIdCommand;
-//import com.sun.tools.javac.util.Assert;
 import Exceptions.StatementDontReturnValueException;
 import Exceptions.VariableIsNull;
 import Exceptions.ZeroRowChangedException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
 
-public class SelectByIdCommandTest {
+public class InsertCompositionCommandTest {
     private boolean execute(Command command) throws StatementDontReturnValueException, VariableIsNull, ZeroRowChangedException {
         return command.execute();
     }
     @Test
-    public void selectByIdCommandTest() {
-//        Assertions.assertTrue(!execute(new SelectByIdCommand(1)), "");
+    public void insertCommandTest() {
+//        Composition composition = new Composition(1, "Stairway to Heaven", 483, null, "Led Zeppelin IV", "Led Zeppelin");
+//        execute(new InsertCommand(composition));
+
     }
 }
