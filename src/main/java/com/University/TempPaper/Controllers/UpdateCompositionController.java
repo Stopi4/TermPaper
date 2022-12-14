@@ -2,11 +2,8 @@ package com.University.TempPaper.Controllers;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
-
 import com.University.TempPaper.Commands.DeleteCompositionGenreCommand;
 import com.University.TempPaper.Commands.UpdateCompositionByIdCommand;
 import com.University.TempPaper.Exceptions.StatementDontReturnValueException;
@@ -28,6 +25,7 @@ import javafx.stage.Stage;
 public class UpdateCompositionController extends Editor{
     Editor editor = this;
     private Composition composition;
+    public static int compositionId;
 
     @FXML
     private ResourceBundle resources;
@@ -104,8 +102,9 @@ public class UpdateCompositionController extends Editor{
 
         addGenreButton.setOnAction(event2 -> {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/com.University.TempPaper/AddGenre.fxml"));
+            loader.setLocation(getClass().getResource("/com.University.TempPaper/AddGenreForComposition.fxml"));
 
+            compositionId = composition.getId();
             try {
                 loader.load();
             } catch (IOException e) {
@@ -128,13 +127,6 @@ public class UpdateCompositionController extends Editor{
 
             try {
                 executeCommand(new DeleteCompositionGenreCommand(editor, (String) selectionGenreModel.getSelectedItem(), composition.getId()));
-                ObservableList<String> genreItemsForDelete = FXCollections.observableArrayList();
-                listViewOfGenreName.setItems(null);
-                List<String> genresForDelete = composition.getGenres();
-                for (String genre : genresForDelete)
-                    genreItemsForDelete.add(genre);
-                genreItemsForDelete.set(selectionGenreModel.getSelectedIndex(), null);
-                listViewOfGenreName.setItems(genreItemsForDelete);
                 ExceptionMessageController.exceptionMessage = "Жанр композиції видалений успішно.";
                 ExceptionMessageController.start();
             } catch (StatementDontReturnValueException | ZeroRowChangedException | VariableIsNull e) {

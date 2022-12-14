@@ -17,8 +17,6 @@ public class DeleteCompositionByIdCommand extends Command{
 
     @Override
     public boolean execute() throws ZeroRowChangedException, StatementDontReturnValueException, VariableIsNull {
-//        if(!recordingStudio.isCollectionExist(assemblageName))
-//            return false;
         recordingStudio.deleteCompositionById(compositionId);
         return true;
     }

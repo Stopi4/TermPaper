@@ -15,6 +15,7 @@ public abstract class Editor {
     protected List<String> genreNames;
     protected double totalDuration;
     protected static boolean dataIsCurrent = false;
+    int genreId;
 
 
     public List<String> getAssemblageNames() {
@@ -50,5 +51,12 @@ public abstract class Editor {
     }
     public double getTotalDuration() {
         return totalDuration;
+    }
+
+    public void setGenreId(int genreId) {
+        this.genreId = genreId;
+    }
+    public int getGenreId() {
+        return genreId;
     }
 }

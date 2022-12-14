@@ -18,10 +18,6 @@ public class SelectAssemblageCommand extends Command{
         super(editor);
         this.assemblageName = assemblageName;
     }
-
-//    public void setStartValues(String assemblageName) {
-//        this.assemblageName = assemblageName;
-//    }
     @Override
     public boolean execute() throws StatementDontReturnValueException, VariableIsNull {
         if(assemblageName == null)

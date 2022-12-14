@@ -80,13 +80,15 @@ public class DeleteAssemblageController extends Editor{
                 ExceptionMessageController.start();
             } else {
                 try {
-                    executeCommand(new SelectAssemblageCommand(editor, (String) selectionAssemblageModel.getSelectedItem()));
+                    try {
+                        executeCommand(new SelectAssemblageCommand(editor, (String) selectionAssemblageModel.getSelectedItem()));
+                    } catch (StatementDontReturnValueException ignored) {                  }
 
                     ObservableList<Composition> compositionItems = FXCollections.observableArrayList();
                     for (Composition composition : editor.compositions)
                         compositionItems.add(composition);
                     listViewOfCompositions.setItems(compositionItems);
-                } catch (StatementDontReturnValueException | VariableIsNull e) {
+                } catch (VariableIsNull e) {
                     ExceptionMessageController.exceptionMessage = e.getMessage();
                     ExceptionMessageController.start();
                     return;
@@ -104,7 +106,7 @@ public class DeleteAssemblageController extends Editor{
                 try {
                     Composition composition = (Composition) selectionCompositionModel.getSelectedItem();
                     editor.executeCommand(new DeleteCompositionByIdCommand(editor, composition.getId()));
-                    ExceptionMessageController.exceptionMessage = "Видалення збірки пройшло успішно!";
+                    ExceptionMessageController.exceptionMessage = "Видалення композиції пройшло успішно!";
                     ExceptionMessageController.start();
                 } catch (StatementDontReturnValueException ignored) {
                 } catch (VariableIsNull | ZeroRowChangedException e) {

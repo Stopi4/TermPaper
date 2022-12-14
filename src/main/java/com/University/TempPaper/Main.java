@@ -1,5 +1,6 @@
 package com.University.TempPaper;
 
+import com.University.TempPaper.Controllers.Menu;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,6 +37,8 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch();
+//        Menu menu = new Menu();
+//        menu.startMenu();
     }
 }
 //public class com.University.TempPaper.Main {

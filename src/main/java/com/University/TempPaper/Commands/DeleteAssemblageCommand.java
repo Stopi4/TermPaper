@@ -19,8 +19,6 @@ public class DeleteAssemblageCommand extends Command{
     public boolean execute() throws StatementDontReturnValueException, VariableIsNull, ZeroRowChangedException {
         if(assemblageName == null)
             return false;
-//        if(!recordingStudio.isCollectionExist(assemblageName))
-//            return false;
         recordingStudio.deleteAssemblage(assemblageName);
         return true;
     }

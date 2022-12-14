@@ -11,12 +11,11 @@ public class InsertGenreOfComposition extends Command{
     private int genreId;
     private int compositionId;
 
-    public InsertGenreOfComposition(Editor editor, int genreId, int compositionId) {
+    public InsertGenreOfComposition(Editor editor, int compositionId, int genreId) {
         super(editor);
         this.genreId = genreId;
-        this.compositionId = genreId;
+        this.compositionId = compositionId;
     }
-
     @Override
     public boolean execute() throws StatementDontReturnValueException, VariableIsNull, ZeroRowChangedException {
         recordingStudio.insertIntoGenreOfComposition(compositionId, genreId);

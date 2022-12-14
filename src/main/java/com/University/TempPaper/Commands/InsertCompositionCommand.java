@@ -15,11 +15,6 @@ public class InsertCompositionCommand extends Command{
         super(editor);
         this.composition = composition;
     }
-
-
-//    public void setStartValues(Composition composition) {
-//        this.composition = composition;
-//    }
     @Override
     public boolean execute() throws StatementDontReturnValueException, VariableIsNull, ZeroRowChangedException {
         if(composition == null)

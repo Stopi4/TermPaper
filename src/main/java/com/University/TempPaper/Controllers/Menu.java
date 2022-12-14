@@ -2,82 +2,36 @@ package com.University.TempPaper.Controllers;
 
 import com.University.TempPaper.Commands.*;
 import com.University.TempPaper.Exceptions.VariableIsNull;
-//import com.University.TempPaper.Exceptions.StatementDontReturnValueException;
-//import com.University.TempPaper.Exceptions.ZeroRowChangedException;
 import com.University.TempPaper.Exceptions.*;
 import com.University.TempPaper.Model.Composition;
 import com.University.TempPaper.dao.RecordingStudio;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Menu extends Editor {
-//    public static Composition composition;
-    RecordingStudio recordingStudio;
     private Editor editor;
-
-//    public static Composition getComposition() {
-//        return composition;
-//    }
-//
-//    public static List<Composition> getCompositions() {
-//        return compositions;
-//    }
-//    public static List<String> getAssemblageNames() {
-//        return assemblageNames;
-//    }
-
-    private boolean execute(Command command) throws StatementDontReturnValueException, VariableIsNull, ZeroRowChangedException {
-        return command.execute();
-    }
     private Scanner scanner = new Scanner(System.in);
     private LinkedList<String> listOfCommand = new LinkedList<>();
+
     {
-//        listOfCommand = new LinkedList<>();
         listOfCommand.add("SelectAssemblage");
-        listOfCommand.add("InsertAssemblage");
+        listOfCommand.add("InsertAssemblageName");
         listOfCommand.add("InsertComposition");
         listOfCommand.add("SelectCompositionsByDuration");
         listOfCommand.add("SelectCompositionByGenreName");
-//        listOfCommand.add("SelectAssemblageName");
-//        listOfCommand.add("Update");
+        listOfCommand.add("SelectAssemblageName");
+        listOfCommand.add("UpdateComposition");
         listOfCommand.add("DeleteCompositionByIdFromAssemblage");
         listOfCommand.add("DeleteAssemblage");
         listOfCommand.add("Exit");
     }
-/*
-    public void startMenu() {
-        editor = this;
-        while(true) {
-            printMenu();
-            System.out.print(" > ");
-            switch (checkUnsignedInt()) {
-                case 1:
-                    printMusicInfo();
-                    break;
-                case 2:
-                    addCollectionToDisk();
-                    break;
-                case 3:
-                    addMusicToCollection();
-                    break;
-                case 4:
-                    deleteMusicFromCollection();
-                    break;
-                case 5:
-                    deleteCollection();
-                    break;
-                default:
-                    System.out.println(" Даного пункту не існує! Повторіть спробу!");
-                    break;
-            }
-        }
+    private boolean execute(Command command) throws StatementDontReturnValueException, VariableIsNull, ZeroRowChangedException {
+        return command.execute();
     }
- */
 
-    public void startMenu2() {
-        recordingStudio = new RecordingStudio();
+    public void startMenu() {
+        new RecordingStudio();
         editor = this;
         while(true) {
 //            printMenu();
@@ -93,11 +47,11 @@ public class Menu extends Editor {
                 case "SelectAssemblage":
                     printMusicInfo();
                     break;
-                case "InsertAssemblage":
-                    addCollectionToDisk();
+                case "InsertAssemblageName":
+                    addAssemblageName();
                     break;
                 case "InsertComposition":
-                    addMusicToCollection();
+                    addCompositionsToAssemblage();
                     break;
                 case "SelectCompositionsByDuration":
                     printMusicInfoByDuration();
@@ -105,11 +59,11 @@ public class Menu extends Editor {
                 case "SelectCompositionByGenreName":
                     printCompositionsByGenre();
                     break;
-//                case "Update...:
-//                    deleteMusicFromCollection();
-//                    break;
+                case "UpdateComposition":
+                    updateComposition();
+                    break;
                 case "DeleteCompositionByIdFromAssemblage":
-                    deleteMusicFromCollection();
+                    deleteCompositionFromAssemblage();
                     break;
                 case "DeleteAssemblage":
                     deleteAssemblage();
@@ -192,40 +146,21 @@ public class Menu extends Editor {
         for (Composition el : super.compositions)
             System.out.println(el);
     }
-    private void printMusicByName(String musicName) {
 
-    }
-    private void printCollectionByName(String collectionName) {
-
-    }
-    private void printMusicByGenre(String genre) {
-
-    }
-
-
-
-
-
-
-
-    private void addCollectionToDisk() {
-        List<Composition> collectionOfComposition = null;
-
-        System.out.println( "Введіть назву збірки:");
-        System.out.print(" > ");
-        String assemblageName = scanner.nextLine();
-//        if(RecordingStudio.isCollectionExist(assemblageName)){
-//            System.out.println("Колекція з таким іменем вже існує!");
-//            return;
-//        }
+    private void addAssemblageName() {
+        String assemblageName;
 
         do {
+            System.out.println( "Введіть назву збірки:");
+            System.out.print(" > ");
+            assemblageName = scanner.nextLine();
             try {
-                execute(new InsertCompositionCommand(editor, createMusic(assemblageName)));
+                execute(new InsertAssemblageNameCommand(editor, assemblageName));
+                break;
             } catch (StatementDontReturnValueException e) {
                 System.out.println(e.getMessage());
             } catch (VariableIsNull e) {
-                System.out.println("Спробуйте ще раз заповнити композицю. " + e.getMessage());
+                System.out.println(e.getMessage());
             } catch (ZeroRowChangedException e) {
                 System.out.println(e.getMessage());
             }
@@ -236,7 +171,8 @@ public class Menu extends Editor {
         } while (assemblageName.trim().equals("\n"));
     }
 
-    private Composition createMusic(String assemblageName) {
+
+    private Composition createComposition(String assemblageName) {
         Composition composition = new Composition();
         LinkedList<String> genres = new LinkedList<>();
 
@@ -263,48 +199,22 @@ public class Menu extends Editor {
         return composition;
     }
 
+    private void addCompositionsToAssemblage() {
+        String assemblageName;
 
-
-    private void addMusicToCollection() {
-//        int numOfAssemblageNames = 0, currentNumOfAssemblageNames = 0;
-//        String currentAssemblageName = null;
-
-//        try {
-//            execute(new SelectAssemblageNamesCommand(editor));
-//        } catch (StatementDontReturnValueException e) {
-//            System.out.println(e.getMessage());
-//        } catch (VariableIsNull | ZeroRowChangedException ignored) {}
-//
-//        System.out.println("\t Усі наявні збірки: ");
-//        for (String assemblageName : super.assemblageNames) {
-//            numOfAssemblageNames++;
-//            System.out.println(numOfAssemblageNames + ". " + assemblageName);
-//        }
-
-
-//        while(true) {
-//            System.out.println(" Введіть номер збірки: ");
-//            System.out.print(" > ");
-//            currentNumOfAssemblageNames = checkUnsignedInt();
-//            if(currentNumOfAssemblageNames > 0 && currentNumOfAssemblageNames <= numOfAssemblageNames)
-//                break;
-//            System.out.println(" Введений некоректний номер! Повторіть спробу!");
-//        }
-        System.out.println("Введіть назву збірки: ");
-        try {
-            printAllAssemblageNames();
-        } catch (StatementDontReturnValueException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-        System.out.println(" > ");
-        String assemblageName = scanner.nextLine();
-
-//        currentAssemblageName = super.assemblageNames.get(currentNumOfAssemblageNames-1);
         do {
+            System.out.println("Введіть назву збірки: ");
             try {
-//                execute(new InsertCompositionCommand(editor, createMusic(currentAssemblageName)));
-                execute(new InsertCompositionCommand(editor, createMusic(assemblageName)));
+                printAllAssemblageNames();
+            } catch (StatementDontReturnValueException e) {
+                System.out.println(e.getMessage());
+                return;
+            }
+            System.out.println(" > ");
+            assemblageName = scanner.nextLine();
+
+            try {
+                execute(new InsertCompositionCommand(editor, createComposition(assemblageName)));
             } catch (StatementDontReturnValueException e) {
                 System.out.println(e.getMessage());
             } catch (VariableIsNull e) {
@@ -317,18 +227,6 @@ public class Menu extends Editor {
             System.out.print(" > ");
             assemblageName = scanner.nextLine();
         } while (assemblageName.trim().equals("\n"));
-
-//        System.out.println("\t Серед наявних є:");
-//        while (true) {}
-//        System.out.println("\t 1.Створити нову збірку");
-//        i = checkUnsignedInt();
-//        if(i == 1){
-//            System.out.printf("Введіть назву збірки:");
-//            createCollection(scanner.nextLine());
-//        }
-
-
-//        RecordingStudio.addMusicToCollectionByCollectionName(createMusic("Something"), collectionName);
     }
 
     private void printCompositionsByGenre() {
@@ -365,32 +263,7 @@ public class Menu extends Editor {
     }
 
 
-//    private static void updateComposition() {
-//        int id = 0;
-//        while(id == 0) {
-//            System.out.println("Введіть id композиції(0 - вивести композиції):");
-//            System.out.print(" > ");
-//            id = checkUnsignedInt();
-//            if (id == 0)
-//                printMusicInfo();
-//        }
-//        if(!execute(new SelectByIdCommand(id))){
-//            System.out.println(" Даної композиції не існує!");
-//            return;
-//        }
-//        Composition composition = createMusic(assemblageNames);
-//        (new UpdateByIdCommand(id, composition)).execute();
-//    }
-
-
-
-
-
-
-
-    private void deleteMusicFromCollection() {
-//        System.out.println("Оновлення ще не завезли!");
-
+    private void deleteCompositionFromAssemblage() {
         System.out.println("\t Введіть назву збірки з якої потрібно видалити композицію:");
         try {
             printAllAssemblageNames();
@@ -464,11 +337,67 @@ public class Menu extends Editor {
             System.out.print(" > ");
             assemblageName = scanner.nextLine();
         } while(assemblageName.equals(""));
-
     }
 
 
+    private void updateComposition() {
+        System.out.println("\t Введіть назву збірки, у якій потрібно редагувати композицію:");
+        try {
+            printAllAssemblageNames();
+        } catch (StatementDontReturnValueException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+        System.out.print(" > ");
+        String assemblageName = scanner.nextLine();
+        do {
+            try {
+                execute(new SelectAssemblageCommand(editor, assemblageName));
+                break;
+            } catch (StatementDontReturnValueException e) {
+                System.out.println(e.getMessage());
+            } catch (VariableIsNull e) {
+                System.out.println(e.getMessage());
+            } catch (ZeroRowChangedException ignored) {
+            }
+            System.out.println("Введіть пустий рядок, щоб завершити спробу:");
+            System.out.print(" > ");
+            assemblageName = scanner.nextLine();
+        } while (assemblageName.trim().equals(""));
+        for (Composition el : super.compositions)
+            System.out.println(el.getName());
 
+        System.out.println("\t Введіть назву композиції, яку потрібно видалити:");
+        System.out.print(" > ");
+        String compositionName = scanner.nextLine();
+        Composition composition = null;
+        do {
+            compositionName = compositionName.trim();
+            for (Composition el : super.compositions) {
+                if (compositionName.equals(el)) {
+                    composition = el;
+                    break;
+                }
+            }
+            if(composition != null)
+                break;
+            System.out.println("Введена назва композиції є хибна!");
+            System.out.println("Введіть пустий рядок, щоб завершити спробу:");
+            System.out.print(" > ");
+            compositionName = scanner.nextLine();
+        } while(compositionName.equals(""));
+
+        try {
+            System.out.println("Введіть нову інформація для композиції:");
+            composition = createComposition(composition.getAssemblageName());
+            execute(new UpdateCompositionByIdCommand(editor, composition));
+        } catch (StatementDontReturnValueException ignored) {
+        } catch (VariableIsNull e) {
+            System.out.println(e.getMessage());
+        } catch (ZeroRowChangedException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     private double checkUnsignedDouble(){
         double number;

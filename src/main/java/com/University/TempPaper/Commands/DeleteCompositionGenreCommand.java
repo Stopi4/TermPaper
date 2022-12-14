@@ -19,8 +19,6 @@ public class DeleteCompositionGenreCommand extends Command{
 
     @Override
     public boolean execute() throws ZeroRowChangedException, StatementDontReturnValueException {
-//        if(!recordingStudio.isCollectionExist(assemblageName))
-//            return false;
         genreId = recordingStudio.selectGenreIdByName(genreName);
         recordingStudio.deleteGenreOfCompositionByGenre(compositionId, genreId);
 

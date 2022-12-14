@@ -21,6 +21,7 @@ public class InsertGenreCommand extends Command{
             return false;
 
         recordingStudio.insertGenre(genreName);
+        editor.setGenreId(recordingStudio.selectCurrentGenreId());
         return true;
     }
 }

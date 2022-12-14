@@ -93,14 +93,14 @@ public class InsertController extends Editor {
 
         try {
             executeCommand(new SelectGenreNamesCommand(editor));
+            items = FXCollections.observableArrayList ();
+            for(String genreName : editor.genreNames)
+                items.add(genreName);
+            listViewGenre.setItems(items);
         } catch (StatementDontReturnValueException | VariableIsNull | ZeroRowChangedException e) {
-            ExceptionMessageController.exceptionMessage = e.getMessage();
-            ExceptionMessageController.start();
+//            ExceptionMessageController.exceptionMessage = e.getMessage();
+//            ExceptionMessageController.start();
         }
-        items = FXCollections.observableArrayList ();
-        for(String genreName : editor.genreNames)
-            items.add(genreName);
-        listViewGenre.setItems(items);
 
         addGenreButton.setOnAction(event -> {
 //            SELECT.getScene().getWindow().hide();

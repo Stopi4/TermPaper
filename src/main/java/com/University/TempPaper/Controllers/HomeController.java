@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.University.TempPaper.dao.RecordingStudio;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -44,6 +45,7 @@ public class HomeController extends Editor {
 
     @FXML
     void initialize() {
+        new RecordingStudio();
         SELECT.setOnAction(event -> {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/com.University.TempPaper/SelectAssemblage.fxml"));

@@ -15,7 +15,6 @@ public class UpdateCompositionByIdCommand extends Command{
         super(editor);
         this.composition = composition;
     }
-
     @Override
     public boolean execute() throws StatementDontReturnValueException, VariableIsNull, ZeroRowChangedException {
         if(composition == null)

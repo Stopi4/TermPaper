@@ -1,18 +1,32 @@
 package com.University.TempPaper.dao;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.sql.*;
+import java.util.logging.FileHandler;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+
+import org.apache.logging.log4j.core.config.Configurator;
+
+//import org.apache.logging.log4j.*;
+//import java.util.logging.C
+
 import com.University.TempPaper.Model.Composition;
 import com.University.TempPaper.Exceptions.*;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 
 
 public class RecordingStudio {
 
-
+//    public static final Logger LOG = LoggerFactory .getLogManager().getLogger(String.valueOf(RecordingStudio.class));
+//    public static final Logger LOG = LogManager.getLogManager().getLogger(String.valueOf(RecordingStudio.class));
+    private static final Logger LOG = Logger.getLogger(RecordingStudio.class.getName());
     public static Connection getConnection() {
         return connection;
     }
@@ -24,6 +38,10 @@ public class RecordingStudio {
 
     private static Connection connection;
     static {
+        initialize();
+    }
+
+    public static void initialize() {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         } catch (ClassNotFoundException e) {
@@ -35,8 +53,19 @@ public class RecordingStudio {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+//        LOG.info("Program starts");
+        try {
+//            LOG.getHandlers()[0] = null;
+            LOG.setUseParentHandlers(false);
+            FileHandler fileHandler = new FileHandler("fileLog.log");
+            LOG.addHandler(fileHandler);
+            SimpleFormatter formatter = new SimpleFormatter();
+            fileHandler.setFormatter(formatter);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        LOG.info("Program starts");
     }
-
 
     public void deleteGenreOfCompositionByGenre(int compositionId, int genreId) throws ZeroRowChangedException {
         PreparedStatement preparedStatement = null;
@@ -154,9 +183,9 @@ public class RecordingStudio {
         List<Composition> compositions;
         List<String> genreNames;
         List<Integer> genresId;
-//        try {
         compositions = new LinkedList<>();
         genreNames = new LinkedList<>();
+
         compositions = selectCompositionsByDuration(d1,d2);
         for (Composition composition : compositions) {
             genresId = selectGenresIdByCompositionId(composition.getId());
@@ -450,8 +479,15 @@ public class RecordingStudio {
 
         int assemblageId = selectAssemblageIdByName(assemblageName);
         List<Composition> compositions = selectCompositionsByAssemblageId(assemblageId);
+        List<Integer> genresId;
         for (Composition composition : compositions) {
-            List<Integer> genresId = selectGenresIdByCompositionId(composition.getId());
+            try {
+                genresId = selectGenresIdByCompositionId(composition.getId());
+            } catch (StatementDontReturnValueException e) {
+                composition.setAssemblageName(assemblageName);
+                assemblage.add(composition);
+                continue;
+            }
             for (Integer genreId : genresId) {
                 String genreName = selectGenreNameById(genreId);
                 genreNames.add(genreName);
@@ -763,8 +799,8 @@ public class RecordingStudio {
 // --------------------------------------------------< >--------------------------------------------------
 
     public void deleteCompositionById(int compositionId) throws ZeroRowChangedException, StatementDontReturnValueException, VariableIsNull {
-        deleteGenreOfComposition(compositionId);
         Composition composition =  getCompositionById(compositionId);
+        deleteGenreOfComposition(compositionId);
         int assemblageId = selectAssemblageIdByName(composition.getAssemblageName());
         increaseTotalDurationOfAssemblage((float) -composition.getDuration(), assemblageId);
 

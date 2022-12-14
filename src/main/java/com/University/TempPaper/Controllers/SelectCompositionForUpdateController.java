@@ -51,16 +51,17 @@ public class SelectCompositionForUpdateController extends Editor {
     void initialize() {
         try {
             executeCommand(new SelectAssemblageNamesCommand(editor));
+            ObservableList<String> assemblageNameItems = FXCollections.observableArrayList ();
+            for(String assemblageName : editor.assemblageNames)
+                assemblageNameItems.add(assemblageName);
+            listViewOfAssemblageName.setItems(assemblageNameItems);
         } catch (StatementDontReturnValueException | VariableIsNull e) {
             ExceptionMessageController.exceptionMessage = e.getMessage();
             ExceptionMessageController.start();
             return;
         } catch (ZeroRowChangedException ignored) {
         }
-        ObservableList<String> assemblageNameItems = FXCollections.observableArrayList ();
-        for(String assemblageName : editor.assemblageNames)
-            assemblageNameItems.add(assemblageName);
-        listViewOfAssemblageName.setItems(assemblageNameItems);
+
 
         button.setOnAction(event -> {
             SelectionModel selectionAssemblageModel = listViewOfAssemblageName.getSelectionModel();
