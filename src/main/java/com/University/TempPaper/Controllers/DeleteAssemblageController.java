@@ -15,9 +15,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.control.Tab;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DeleteAssemblageController extends Editor{
     Editor editor = this;
+    private static final Logger LOG = LogManager.getLogger(DeleteAssemblageController.class);
+
     @FXML
     private Button button;
 
@@ -46,20 +50,23 @@ public class DeleteAssemblageController extends Editor{
     void initialize() {
         try {
             executeCommand(new SelectAssemblageNamesCommand(editor));
+            ObservableList<String> items = FXCollections.observableArrayList ();
+            for(String assemblageName : editor.assemblageNames)
+                items.add(assemblageName);
+            listViewOfAssemblageNameForComposition.setItems(items);
+            listViewAssemblageNameForAssemblage.setItems(items);
         } catch (StatementDontReturnValueException | VariableIsNull | ZeroRowChangedException e) {
             ExceptionMessageController.exceptionMessage = e.getMessage();
             ExceptionMessageController.start();
+            return;
         }
-        ObservableList<String> items = FXCollections.observableArrayList ();
-        for(String assemblageName : editor.assemblageNames)
-            items.add(assemblageName);
-        listViewOfAssemblageNameForComposition.setItems(items);
-        listViewAssemblageNameForAssemblage.setItems(items);
 
         button.setOnAction(event -> {
             SelectionModel selectionAssemblageNameModel = listViewAssemblageNameForAssemblage.getSelectionModel();
             if(selectionAssemblageNameModel.getSelectedItem() == null) {
-                ExceptionMessageController.exceptionMessage = "Не вибрана збірка для композиції";
+                String message = "Не вибрана збірка для композиції";
+                LOG.warn(message);
+                ExceptionMessageController.exceptionMessage = message;
                 ExceptionMessageController.start();
             } else {
                 try {
@@ -73,10 +80,13 @@ public class DeleteAssemblageController extends Editor{
                 }
             }
         });
+
         buttonCBA.setOnAction(actionEvent -> {
             SelectionModel selectionAssemblageModel = listViewOfAssemblageNameForComposition.getSelectionModel();
             if (selectionAssemblageModel.getSelectedItem() == null) {
-                ExceptionMessageController.exceptionMessage = "Не вибрана назва збірки.";
+                String message = "Не вибрана назва збірки.";
+                LOG.warn(message);
+                ExceptionMessageController.exceptionMessage = message;
                 ExceptionMessageController.start();
             } else {
                 try {
@@ -100,7 +110,9 @@ public class DeleteAssemblageController extends Editor{
         deleteButton.setOnAction(actionEvent ->  {
             SelectionModel selectionCompositionModel = listViewOfCompositions.getSelectionModel();
             if(selectionCompositionModel.getSelectedItem() == null) {
-                ExceptionMessageController.exceptionMessage = "Не вибрана збірка для композиції";
+                String message = "Не вибрана збірка для композиції";
+                LOG.warn(message);
+                ExceptionMessageController.exceptionMessage = message;
                 ExceptionMessageController.start();
             } else {
                 try {

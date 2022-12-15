@@ -19,10 +19,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionModel;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SelectCompositionForUpdateController extends Editor {
+    private static final Logger LOG = LogManager.getLogger(SelectCompositionForUpdateController.class);
     Editor editor = this;
     public static Composition composition;
 
@@ -40,9 +42,6 @@ public class SelectCompositionForUpdateController extends Editor {
 
     @FXML
     private ListView<String> listViewOfAssemblageName;
-
-    @FXML
-    private TextField textField;
 
     @FXML
     private Button updateButton;
@@ -66,7 +65,9 @@ public class SelectCompositionForUpdateController extends Editor {
         button.setOnAction(event -> {
             SelectionModel selectionAssemblageModel = listViewOfAssemblageName.getSelectionModel();
             if(selectionAssemblageModel.getSelectedItem() == null) {
-                ExceptionMessageController.exceptionMessage = "Не вибрана назва збірки.";
+                String message = "Не вибрана назва збірки.";
+                LOG.warn(message);
+                ExceptionMessageController.exceptionMessage = message;
                 ExceptionMessageController.start();
             } else {
                 try {
@@ -87,7 +88,9 @@ public class SelectCompositionForUpdateController extends Editor {
         updateButton.setOnAction(event -> {
             SelectionModel selectionCompositionModel = listViewOfAssemblage.getSelectionModel();
             if(selectionCompositionModel.getSelectedItem() == null) {
-                ExceptionMessageController.exceptionMessage = "Не вибрана назва композиції.";
+                String message = "Не вибрана назва композиції.";
+                LOG.warn(message);
+                ExceptionMessageController.exceptionMessage = message;
                 ExceptionMessageController.start();
             } else {
                 composition = (Composition) selectionCompositionModel.getSelectedItem();

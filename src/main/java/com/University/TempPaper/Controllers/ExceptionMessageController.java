@@ -57,5 +57,4 @@ public class ExceptionMessageController extends Editor {
         stage.setScene(new Scene(root));
         stage.showAndWait();
     }
-
 }

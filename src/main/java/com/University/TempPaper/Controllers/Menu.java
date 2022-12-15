@@ -32,6 +32,17 @@ public class Menu extends Editor {
 
     public void startMenu() {
         new RecordingStudio();
+
+//        try {
+//            execute(new DeleteCompositionGenreCommand(editor, "Хардрок", 120));
+//        } catch (StatementDontReturnValueException e) {
+//            throw new RuntimeException(e);
+//        } catch (VariableIsNull e) {
+//            throw new RuntimeException(e);
+//        } catch (ZeroRowChangedException e) {
+//            throw new RuntimeException(e);
+//        }
+
         editor = this;
         while(true) {
 //            printMenu();

@@ -12,9 +12,12 @@ import com.University.TempPaper.Exceptions.ZeroRowChangedException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class AddGenreForCompositionCotroller extends Editor{
     Editor editor = this;
+    private static final Logger LOG = LogManager.getLogger(AddGenreForCompositionCotroller.class);
 
     @FXML
     private ResourceBundle resources;
@@ -35,23 +38,29 @@ public class AddGenreForCompositionCotroller extends Editor{
             try {
                 executeCommand(new SelectGenreNamesCommand(editor));
                 String genreName = textField.getText();
-                if(!editor.genreNames.contains(genreName)) {
-                    executeCommand(new InsertGenreCommand(editor, genreName));
-                    genreId = editor.getGenreId();
+                if (genreName == "") {
+                    String message = "Поле назви жанру є пустим!";
+                    LOG.warn(message);
+
+                    ExceptionMessageController.exceptionMessage = message;
+                    ExceptionMessageController.start();
                 } else {
-                    executeCommand(new SelectGenreIdByNameCommand(editor, genreName));
-                    genreId = editor.getGenreId();
+                    if (!editor.genreNames.contains(genreName)) {
+                        executeCommand(new InsertGenreCommand(editor, genreName));
+                        genreId = editor.getGenreId();
+                    } else {
+                        executeCommand(new SelectGenreIdByNameCommand(editor, genreName));
+                        genreId = editor.getGenreId();
+                    }
+                    executeCommand(new InsertGenreOfComposition(editor, UpdateCompositionController.compositionId, genreId));
+                    button.getScene().getWindow().hide();
                 }
-
-                    executeCommand(new InsertGenreOfComposition(editor, UpdateCompositionController.compositionId,genreId));
-
-                button.getScene().getWindow().hide();
             } catch (StatementDontReturnValueException | ZeroRowChangedException | VariableIsNull e) {
+                LOG.warn(e);
                 ExceptionMessageController.exceptionMessage = e.getMessage();
                 ExceptionMessageController.start();
             }
         });
     }
-
 }
 

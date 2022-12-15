@@ -21,8 +21,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class UpdateCompositionController extends Editor{
+public class UpdateCompositionController extends Editor {
+    private static final Logger LOG = LogManager.getLogger(UpdateCompositionController.class);
     Editor editor = this;
     private Composition composition;
     public static int compositionId;
@@ -74,24 +77,32 @@ public class UpdateCompositionController extends Editor{
 
         updateButton.setOnAction(event -> {
             try {
-                if (textFieldAssemblageName.getText().equals(""))
-                    throw new VariableIsNull("Поле ім'я збірки є пустим, заповніть його!");
-                if (textFieldCompositionName.getText().equals(""))
-                    throw new VariableIsNull("Поле ім'я є пустим, заповніть його!");
-                if (textFieldCompositionDuration.getText().equals(""))
-                    throw new VariableIsNull("Поле ім'я тривалості є пустим, заповніть його!");
-                if (equals(textFieldCompositionPerformer.getText().equals("")))
-                    throw new VariableIsNull("Поле виконавця є пустим, заповніть його!");
+                String message;
+                if (textFieldAssemblageName.getText().equals("")) {
+//                    throw new VariableIsNull("Поле ім'я збірки є пустим, заповніть його!");
+                    message = "Поле ім'я збірки є пустим, заповніть його!";
+                } else if (textFieldCompositionName.getText().equals("")) {
+//                    throw new VariableIsNull("Поле ім'я є пустим, заповніть його!");
+                    message = "Поле ім'я є пустим, заповніть його!";
+                } else if (textFieldCompositionDuration.getText().equals("")) {
+//                    throw new VariableIsNull("Поле ім'я тривалості є пустим, заповніть його!");
+                    message = "Поле ім'я тривалості є пустим, заповніть його!";
+                } else if (textFieldCompositionPerformer.getText().equals("")) {
+//                    throw new VariableIsNull("Поле виконавця є пустим, заповніть його!");
+                    message = "Поле виконавця є пустим, заповніть його!";
+                } else {
+                    composition.setName(textFieldCompositionName.getText());
+                    composition.setAssemblageName(textFieldAssemblageName.getText());
+                    composition.setDuration(Double.parseDouble(textFieldCompositionDuration.getText()));
+                    composition.setPerformer(textFieldCompositionPerformer.getText());
 
-
-                composition.setName(textFieldCompositionName.getText());
-                composition.setAssemblageName(textFieldAssemblageName.getText());
-                composition.setDuration(Double.parseDouble(textFieldCompositionDuration.getText()));
-                composition.setPerformer(textFieldCompositionPerformer.getText());
-
-
-                executeCommand(new UpdateCompositionByIdCommand(editor, composition));
-                ExceptionMessageController.exceptionMessage = "Композиція оновлена успішно!";
+                    executeCommand(new UpdateCompositionByIdCommand(editor, composition));
+                    ExceptionMessageController.exceptionMessage = "Композиція оновлена успішно!";
+                    ExceptionMessageController.start();
+                    return;
+                }
+                LOG.warn(message);
+                ExceptionMessageController.exceptionMessage = message;
                 ExceptionMessageController.start();
             } catch (StatementDontReturnValueException ignored) {
             } catch (VariableIsNull | ZeroRowChangedException e) {
@@ -135,5 +146,4 @@ public class UpdateCompositionController extends Editor{
             }
         });
     }
-
 }

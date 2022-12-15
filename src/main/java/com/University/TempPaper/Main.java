@@ -1,5 +1,6 @@
 package com.University.TempPaper;
 
+import com.University.TempPaper.Commands.DeleteCompositionGenreCommand;
 import com.University.TempPaper.Controllers.Menu;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

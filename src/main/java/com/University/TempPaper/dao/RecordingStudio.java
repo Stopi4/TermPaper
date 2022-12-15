@@ -1,6 +1,5 @@
 package com.University.TempPaper.dao;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,35 +7,33 @@ import java.util.LinkedList;
 import java.util.List;
 import java.sql.*;
 import java.util.logging.FileHandler;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
-import org.apache.logging.log4j.core.config.Configurator;
 
-//import org.apache.logging.log4j.*;
-//import java.util.logging.C
+//import org.apache.logging.log4j.Logger;
 
+
+import org.apache.logging.log4j.LogManager;
+//import org.apache.log4j.Logger;
 import com.University.TempPaper.Model.Composition;
 import com.University.TempPaper.Exceptions.*;
-import org.apache.logging.log4j.core.config.DefaultConfiguration;
+import org.apache.logging.log4j.Logger;
 
 
 public class RecordingStudio {
 
 //    public static final Logger LOG = LoggerFactory .getLogManager().getLogger(String.valueOf(RecordingStudio.class));
 //    public static final Logger LOG = LogManager.getLogManager().getLogger(String.valueOf(RecordingStudio.class));
-    private static final Logger LOG = Logger.getLogger(RecordingStudio.class.getName());
+    private static final Logger LOG = LogManager.getLogger(RecordingStudio.class); // LogManager.getLogManager().getLogger(RecordingStudio.class.getName());
+    private static FileHandler fileHandler;
+    private static final String URL =// "jdbc:sqlserver://DESKTOP-3096NSM:1433;"
+             "databaseName=TermPaper;"+"integratedSecurity=true;encrypt=true;trustServerCertificate=true;";
+    private static final String USER = "stepa";
+    private static final String PASSWORD = "";
+    private static Connection connection;
+
     public static Connection getConnection() {
         return connection;
     }
-
-    private static final String URL = "jdbc:sqlserver://DESKTOP-3096NSM:1433;"
-            + "databaseName=TermPaper;"+"integratedSecurity=true;encrypt=true;trustServerCertificate=true;";
-    private static final String USER = "stepa";
-    private static final String PASSWORD = "";
-
-    private static Connection connection;
     static {
         initialize();
     }
@@ -45,26 +42,43 @@ public class RecordingStudio {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         } catch (ClassNotFoundException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
         }
 
         try {
             connection = DriverManager.getConnection (URL, USER, PASSWORD);
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
         }
-//        LOG.info("Program starts");
-        try {
-//            LOG.getHandlers()[0] = null;
-            LOG.setUseParentHandlers(false);
-            FileHandler fileHandler = new FileHandler("fileLog.log");
-            LOG.addHandler(fileHandler);
-            SimpleFormatter formatter = new SimpleFormatter();
-            fileHandler.setFormatter(formatter);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        LOG.info("Program starts");
+//        try {
+//            LOG.setUseParentHandlers(false);
+//            fileHandler = new FileHandler("fileLog.log");
+//            LOG.addHandler(fileHandler);
+//            SimpleFormatter formatter = new SimpleFormatter();
+//            fileHandler.setFormatter(formatter);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        LOG.setLevel(Level.WARNING);
+//        LOG.info("Program connected to DB");
+//        LOG.warning("Program connected to DB");
+
+//        Configurator.initialize(new DefaultConfiguration());
+//        Configurator.setRootLevel(Level.INFO);
+
+//        PropertyConfigurator .configure("log4j.properties");
+//         PropertiesConfiguration. .configure("log4j.properties");
+//        Configurator.reconfigure("log4j.properties");
+//        XmlConfiguration xmlConfiguration = new XmlConfiguration()
+
+
+        LOG.info("Program connected to DB");
+//        LOG.warn("Program connected to DB");
+//        LOG.error("Program connected to DB");
+
+
     }
 
     public void deleteGenreOfCompositionByGenre(int compositionId, int genreId) throws ZeroRowChangedException {
@@ -79,12 +93,15 @@ public class RecordingStudio {
                 throw new ZeroRowChangedException("Жанру для цієї композиції не існує!");
 
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (ZeroRowChangedException e) {
+            LOG.warn(e);
+            throw new ZeroRowChangedException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            } catch (SQLException ignored) {
             }
         }
     }
@@ -99,12 +116,16 @@ public class RecordingStudio {
             if(preparedStatement.executeUpdate() == 0)
                 throw new ZeroRowChangedException("Жанру для цієї композиції не існує!");
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (ZeroRowChangedException e) {
+            LOG.warn(String.valueOf(e));
+//            LOG.er
+            throw new ZeroRowChangedException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            } catch (SQLException ignored) {
             }
         }
     }
@@ -121,8 +142,15 @@ public class RecordingStudio {
             if(preparedStatement.executeUpdate() == 0)
                 throw new ZeroRowChangedException("Не вдалося зберегти жанр!");
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
-        } finally {
+        } catch (ZeroRowChangedException e) {
+            LOG.warn(String.valueOf(e));
+            throw new ZeroRowChangedException(e.getMessage());
+        } catch (VariableIsNull e) {
+            LOG.warn(String.valueOf(e));
+            throw new VariableIsNull(e.getMessage());
+        }  finally {
             try {
                 preparedStatement.close();
             } catch (SQLException e) {
@@ -142,7 +170,14 @@ public class RecordingStudio {
             if(preparedStatement.executeUpdate() == 0)
                 throw new ZeroRowChangedException("Не вдалося зберегти жанр!");
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (ZeroRowChangedException e) {
+            LOG.warn(String.valueOf(e));
+            throw new ZeroRowChangedException(e.getMessage());
+        } catch (VariableIsNull e) {
+            LOG.warn(String.valueOf(e));
+            throw new VariableIsNull(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
@@ -169,8 +204,12 @@ public class RecordingStudio {
                 genreNames.add(resultSet.getString(1));
             } while(resultSet.next());
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
-        } finally {
+        }catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
+        }  finally {
             try {
                 preparedStatement.close();
                 resultSet.close();
@@ -226,13 +265,16 @@ public class RecordingStudio {
                 compositions.add(composition);
             } while (resultSet.next());
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
                 resultSet.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            } catch (SQLException ignored) {
             }
         }
         return compositions;
@@ -270,9 +312,10 @@ public class RecordingStudio {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
-        if(assemblageName == null)
-            throw new VariableIsNull("Змінна з назвою збірки є пустою!");
         try {
+            if(assemblageName == null)
+                throw new VariableIsNull("Змінна з назвою збірки є пустою!");
+
             preparedStatement = connection.prepareStatement(
                     "SELECT assemblageID FROM Assemblage.AssemblageNames WHERE assemblageName = ?");
             preparedStatement.setString(1, assemblageName);
@@ -282,7 +325,14 @@ public class RecordingStudio {
 
             assemblageID = resultSet.getInt(1);
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
+        } catch (VariableIsNull e) {
+            LOG.warn(String.valueOf(e));
+            throw new VariableIsNull(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
@@ -306,7 +356,11 @@ public class RecordingStudio {
             if(preparedStatement.executeUpdate() == 0)
                 throw new ZeroRowChangedException("Не вдалося зберегти композицію!");
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (ZeroRowChangedException e) {
+            LOG.warn(String.valueOf(e));
+            throw new ZeroRowChangedException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
@@ -325,7 +379,11 @@ public class RecordingStudio {
             if(preparedStatement.executeUpdate() == 0)
                 throw new ZeroRowChangedException("Не вдалося зберегти назву збірки!");
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (ZeroRowChangedException e) {
+            LOG.warn(String.valueOf(e));
+            throw new ZeroRowChangedException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
@@ -347,7 +405,11 @@ public class RecordingStudio {
             compositionId = resultSet.getInt(1);
 
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
@@ -371,7 +433,11 @@ public class RecordingStudio {
             assemblageId = resultSet.getInt(1);
 
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
@@ -395,7 +461,11 @@ public class RecordingStudio {
             genreId = resultSet.getInt(1);
 
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
         } finally {
             try {
                 assert preparedStatement != null && resultSet != null;
@@ -421,7 +491,11 @@ public class RecordingStudio {
             genreId = resultSet.getInt(1);
 
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
@@ -441,12 +515,15 @@ public class RecordingStudio {
             if(preparedStatement.executeUpdate() == 0)
                 throw new ZeroRowChangedException("Не вдалося зберегти назву жанру!");
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (ZeroRowChangedException e) {
+            LOG.warn(String.valueOf(e));
+            throw new ZeroRowChangedException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            } catch (SQLException ignored) {
             }
         }
     }
@@ -462,12 +539,15 @@ public class RecordingStudio {
             if(preparedStatement.executeUpdate() == 0)
                 throw new ZeroRowChangedException("Не вдалося зберегти жанри композиції!");
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (ZeroRowChangedException e) {
+            LOG.warn(String.valueOf(e));
+            throw new ZeroRowChangedException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
             }
         }
     }
@@ -524,13 +604,22 @@ public class RecordingStudio {
             if(preparedStatement.executeUpdate() == 0)
                 throw new ZeroRowChangedException("Не вдалося оновити вказану композицію!");
 
+        } catch (ZeroRowChangedException e) {
+            LOG.warn(String.valueOf(e));
+            throw new ZeroRowChangedException(e.getMessage());
+        } catch (VariableIsNull e) {
+            LOG.warn(String.valueOf(e));
+            throw new VariableIsNull(e.getMessage());
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
         } finally {
             try {
                 preparedStatement.close();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
             }
         }
     }
@@ -558,13 +647,16 @@ public class RecordingStudio {
                 compositions.add(composition);
             } while (resultSet.next());
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
                 resultSet.close();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
             }
         }
         return compositions;
@@ -587,13 +679,16 @@ public class RecordingStudio {
                 genresId.add(resultSet.getInt("genreId"));
             } while (resultSet.next());
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
                 resultSet.close();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
             }
         }
         return genresId;
@@ -613,13 +708,16 @@ public class RecordingStudio {
                 throw new StatementDontReturnValueException("Жанрів з таким ID не існує в базі даних!");
             genreName = resultSet.getString("genreName");
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
                 resultSet.close();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
             }
         }
         return genreName;
@@ -643,7 +741,11 @@ public class RecordingStudio {
                 assemblageNames.add(resultSet.getString(1));
             } while(resultSet.next());
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
@@ -669,7 +771,11 @@ public class RecordingStudio {
 
             totalDuration = resultSet.getDouble(1);
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
@@ -702,7 +808,11 @@ public class RecordingStudio {
                 throw new ZeroRowChangedException("Не вдалося видалити композиції за вказаним ID збірки!");
 
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (ZeroRowChangedException e) {
+            LOG.warn(String.valueOf(e));
+            throw new ZeroRowChangedException(e.getMessage());
         }
     }
 
@@ -713,7 +823,11 @@ public class RecordingStudio {
             if(preparedDeleteAssemblageStatement.executeUpdate() == 0)
                 throw new ZeroRowChangedException("Не вдалося видалити збірку за вказаним ID!");
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (ZeroRowChangedException e) {
+            LOG.warn(String.valueOf(e));
+            throw new ZeroRowChangedException(e.getMessage());
         }
     }
 
@@ -760,7 +874,11 @@ public class RecordingStudio {
             composition.setDuration(resultSet.getFloat("duration"));
             composition.setAssemblageName(String.valueOf(resultSet.getInt("assemblageID")));
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
@@ -786,7 +904,11 @@ public class RecordingStudio {
 
             assemblageName = resultSet.getString("assemblageName");
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
@@ -799,18 +921,32 @@ public class RecordingStudio {
 // --------------------------------------------------< >--------------------------------------------------
 
     public void deleteCompositionById(int compositionId) throws ZeroRowChangedException, StatementDontReturnValueException, VariableIsNull {
-        Composition composition =  getCompositionById(compositionId);
-        deleteGenreOfComposition(compositionId);
-        int assemblageId = selectAssemblageIdByName(composition.getAssemblageName());
-        increaseTotalDurationOfAssemblage((float) -composition.getDuration(), assemblageId);
+        Composition composition;
+        int assemblageId;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "DELETE FROM Assemblage.Compositions WHERE compositionID = ?")) {
+
+            composition =  getCompositionById(compositionId);
+            deleteGenreOfComposition(compositionId);
+            assemblageId = selectAssemblageIdByName(composition.getAssemblageName());
+            increaseTotalDurationOfAssemblage((float) -composition.getDuration(), assemblageId);
+
             preparedStatement.setInt(1, compositionId);
             if(preparedStatement.executeUpdate() == 0)
                 throw new ZeroRowChangedException("Не вдалося видалити композиції за вказаним ID!");
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
+        } catch (ZeroRowChangedException e) {
+            LOG.warn(String.valueOf(e));
+            throw new ZeroRowChangedException(e.getMessage());
+        } catch (VariableIsNull e) {
+            LOG.warn(String.valueOf(e));
+            throw new VariableIsNull(e.getMessage());
         }
     }
 
@@ -834,13 +970,16 @@ public class RecordingStudio {
                 compositionsId.add(resultSet.getInt("compositionID"));
             } while (resultSet.next());
         } catch (SQLException e) {
+            LOG.error(e);
             throw new RuntimeException(e);
+        } catch (StatementDontReturnValueException e) {
+            LOG.warn(String.valueOf(e));
+            throw new StatementDontReturnValueException(e.getMessage());
         } finally {
             try {
                 preparedStatement.close();
                 resultSet.close();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
             }
         }
         return compositionsId;

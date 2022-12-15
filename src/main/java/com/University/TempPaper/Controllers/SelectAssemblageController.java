@@ -9,8 +9,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SelectAssemblageController extends Editor {
+    private static final Logger LOG = LogManager.getLogger(SelectAssemblageController.class);
     Editor editor = this;
     @FXML
     private Button buttonCBA;
@@ -76,7 +79,9 @@ public class SelectAssemblageController extends Editor {
         buttonCBA.setOnAction(event -> {
             SelectionModel selectionAssemblageModel = listViewOfAssemblageName.getSelectionModel();
             if (selectionAssemblageModel.getSelectedItem() == null) {
-                ExceptionMessageController.exceptionMessage = "Не вибрана назва збірки.";
+                String message = "Не вибрана назва збірки.";
+                LOG.warn(message);
+                ExceptionMessageController.exceptionMessage = message;
                 ExceptionMessageController.start();
             } else {
                 try {
@@ -99,15 +104,25 @@ public class SelectAssemblageController extends Editor {
 
         buttonCBD.setOnAction(event -> {
             try {
-                if(textFieldLb.getText() == "" || textFieldUb.getText() == "")
-                    throw new VariableIsNull("Поля є пустими, заповніть їх!");
-                executeCommand(new SelectCompositionsByDurationCommand(editor,
-                        Double.parseDouble(textFieldLb.getText()), Double.parseDouble(textFieldUb.getText())));
+                String message;
+                if(textFieldLb.getText() == "") {
+                    message = "Поле мінімальної тривалості є пустим!";
+                }
+                else if(textFieldUb.getText() == "") {
+                    message = "Поле максимальної тривалості є пустим!";
+                } else {
+                    executeCommand(new SelectCompositionsByDurationCommand(editor,
+                            Double.parseDouble(textFieldLb.getText()), Double.parseDouble(textFieldUb.getText())));
 
-                ObservableList<Composition> compositionsItems = FXCollections.observableArrayList();
-                for (Composition composition : editor.compositions)
-                    compositionsItems.add(composition);
-                listViewOfAssemblageCBD.setItems(compositionsItems);
+                    ObservableList<Composition> compositionsItems = FXCollections.observableArrayList();
+                    for (Composition composition : editor.compositions)
+                        compositionsItems.add(composition);
+                    listViewOfAssemblageCBD.setItems(compositionsItems);
+                    return;
+                }
+                LOG.warn(message);
+                ExceptionMessageController.exceptionMessage = message;
+                ExceptionMessageController.start();
             } catch (StatementDontReturnValueException | VariableIsNull e) {
                 ExceptionMessageController.exceptionMessage = e.getMessage();
                 ExceptionMessageController.start();
@@ -118,7 +133,9 @@ public class SelectAssemblageController extends Editor {
         buttonCBG.setOnAction(event -> {
             SelectionModel selectionGenreModel = listViewOfGenreName.getSelectionModel();
             if (selectionGenreModel.getSelectedItem() == null) {
-                ExceptionMessageController.exceptionMessage = "Не вибраний жанр.";
+                String message = "Не вибраний жанр.";
+                LOG.warn(message);
+                ExceptionMessageController.exceptionMessage = message;
                 ExceptionMessageController.start();
             } else {
                 try {

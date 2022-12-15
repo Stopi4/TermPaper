@@ -1,0 +1,59 @@
+2022-12-15 09:08:40,082 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 09:08:40,086 WARN c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 09:08:40,086 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 09:13:08,641 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 09:13:08,645 WARN c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 09:13:08,645 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 09:13:43,265 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 09:13:43,269 WARN c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 09:13:43,269 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 09:15:43,528 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 09:15:43,532 WARN c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 09:15:43,532 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 10:28:12,901 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 10:28:12,905 WARN c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 10:28:12,906 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 10:28:38,780 WARN c.U.T.C.SelectAssemblageController [JavaFX Application Thread] Поле мінімальної тривалості є пустим!
+2022-12-15 10:29:53,565 WARN c.U.T.C.SelectAssemblageController [JavaFX Application Thread] Поле максимальної тривалості є пустим!
+2022-12-15 10:29:56,717 WARN c.U.T.C.SelectAssemblageController [JavaFX Application Thread] Не вибраний жанр.
+2022-12-15 10:30:03,861 WARN c.U.T.C.SelectCompositionForUpdateController [JavaFX Application Thread] Не вибрана назва збірки.
+2022-12-15 10:30:07,997 WARN c.U.T.C.SelectCompositionForUpdateController [JavaFX Application Thread] Не вибрана назва композиції.
+2022-12-15 10:32:11,698 WARN c.U.T.C.AddGenreForCompositionCotroller [JavaFX Application Thread] Поле назви жанру є пустим!
+2022-12-15 10:32:17,397 WARN c.U.T.d.RecordingStudio [JavaFX Application Thread] com.University.TempPaper.Exceptions.StatementDontReturnValueException: Жанрів з таким іменем не існує в базі даних!
+2022-12-15 10:32:27,213 WARN c.U.T.C.DeleteAssemblageController [JavaFX Application Thread] Не вибрана назва збірки.
+2022-12-15 10:32:41,825 WARN c.U.T.C.InsertController [JavaFX Application Thread] Не вибрана збірка для композиції
+2022-12-15 10:32:45,637 WARN c.U.T.C.AddGenreController [JavaFX Application Thread] Поле назви збірки є пустим!
+2022-12-15 10:32:48,969 WARN c.U.T.C.InsertController [JavaFX Application Thread] Не вибрана збірка для композиції
+2022-12-15 10:32:51,139 WARN c.U.T.C.InsertController [JavaFX Application Thread] Поле імені композиції є пустим!
+2022-12-15 10:33:07,135 WARN c.U.T.C.InsertController [JavaFX Application Thread] Поле назва виконавця є пустим!
+2022-12-15 10:33:13,136 WARN c.U.T.C.InsertController [JavaFX Application Thread] Поле назва виконавця є пустим!
+2022-12-15 10:50:12,176 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] java.sql.SQLException: No suitable driver found for databaseName=TermPaper;integratedSecurity=true;encrypt=true;trustServerCertificate=true;
+2022-12-15 15:18:34,009 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 15:18:39,893 WARN c.U.T.C.SelectAssemblageController [JavaFX Application Thread] Поле мінімальної тривалості є пустим!
+2022-12-15 15:21:00,455 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 15:27:25,904 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] java.sql.SQLException: No suitable driver found for databaseName=TermPaper;integratedSecurity=true;encrypt=true;trustServerCertificate=true;
+2022-12-15 16:57:04,684 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 17:11:16,294 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 17:11:57,566 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 17:13:35,339 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 17:13:44,577 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 17:14:02,497 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 17:15:59,572 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 17:16:20,040 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 17:17:10,229 WARN c.U.T.C.SelectAssemblageController [JavaFX Application Thread] Не вибрана назва збірки.
+2022-12-15 17:18:19,061 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] java.sql.SQLException: No suitable driver found for databaseName=TermPaper;integratedSecurity=true;encrypt=true;trustServerCertificate=true;
+2022-12-15 17:24:08,300 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] java.sql.SQLException: No suitable driver found for databaseName=TermPaper;integratedSecurity=true;encrypt=true;trustServerCertificate=true;
+2022-12-15 17:24:50,771 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 17:24:56,717 WARN c.U.T.C.SelectAssemblageController [JavaFX Application Thread] Не вибрана назва збірки.
+2022-12-15 17:25:01,309 WARN c.U.T.C.SelectAssemblageController [JavaFX Application Thread] Поле мінімальної тривалості є пустим!
+2022-12-15 17:27:03,301 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 17:27:08,261 WARN c.U.T.C.SelectAssemblageController [JavaFX Application Thread] Не вибрана назва збірки.
+2022-12-15 17:28:02,478 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] java.sql.SQLException: No suitable driver found for databaseName=TermPaper;integratedSecurity=true;encrypt=true;trustServerCertificate=true;
+2022-12-15 17:30:38,062 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] java.sql.SQLException: No suitable driver found for databaseName=TermPaper;integratedSecurity=true;encrypt=true;trustServerCertificate=true;
+2022-12-15 17:35:41,805 INFO c.U.T.d.RecordingStudio [JavaFX Application Thread] Program connected to DB
+2022-12-15 17:36:18,006 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] java.sql.SQLException: No suitable driver found for databaseName=TermPaper;integratedSecurity=true;encrypt=true;trustServerCertificate=true;
+2022-12-15 18:15:14,114 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] java.sql.SQLException: No suitable driver found for databaseName=TermPaper;integratedSecurity=true;encrypt=true;trustServerCertificate=true;
+2022-12-15 18:16:37,133 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] java.sql.SQLException: No suitable driver found for databaseName=TermPaper;integratedSecurity=true;encrypt=true;trustServerCertificate=true;
+2022-12-15 18:18:19,440 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] java.sql.SQLException: No suitable driver found for databaseName=TermPaper;integratedSecurity=true;encrypt=true;trustServerCertificate=true;
+2022-12-15 18:19:21,236 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] java.sql.SQLException: No suitable driver found for databaseName=TermPaper;integratedSecurity=true;encrypt=true;trustServerCertificate=true;
+2022-12-15 18:19:52,505 ERROR c.U.T.d.RecordingStudio [JavaFX Application Thread] java.sql.SQLException: No suitable driver found for databaseName=TermPaper;integratedSecurity=true;encrypt=true;trustServerCertificate=true;

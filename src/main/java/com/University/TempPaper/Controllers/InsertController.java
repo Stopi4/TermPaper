@@ -22,9 +22,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.skin.ListViewSkin;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class InsertController extends Editor {
     public Editor editor = this;
+    private static final Logger LOG = LogManager.getLogger(InsertController.class);
 
     @FXML
     private ResourceBundle resources;
@@ -87,8 +90,8 @@ public class InsertController extends Editor {
                 items.add(assemblageName);
             listViewAssemblage.setItems(items);
         } catch (StatementDontReturnValueException | VariableIsNull | ZeroRowChangedException e) {
-//            ExceptionMessageController.exceptionMessage = e.getMessage();
-//            ExceptionMessageController.start();
+            ExceptionMessageController.exceptionMessage = e.getMessage();
+            ExceptionMessageController.start();
         }
 
         try {
@@ -98,15 +101,13 @@ public class InsertController extends Editor {
                 items.add(genreName);
             listViewGenre.setItems(items);
         } catch (StatementDontReturnValueException | VariableIsNull | ZeroRowChangedException e) {
-//            ExceptionMessageController.exceptionMessage = e.getMessage();
-//            ExceptionMessageController.start();
+            ExceptionMessageController.exceptionMessage = e.getMessage();
+            ExceptionMessageController.start();
         }
 
         addGenreButton.setOnAction(event -> {
 //            SELECT.getScene().getWindow().hide();
-
             FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation(getClass().getResource("/com.University.TempPaper/HomeWindow.fxml"));
             loader.setLocation(getClass().getResource("/com.University.TempPaper/AddGenre.fxml"));
 
             try {
@@ -124,9 +125,7 @@ public class InsertController extends Editor {
         });
         addAssemblageButton.setOnAction(event -> {
 //            addAssemblageButton.getScene().getWindow().hide();
-
             FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation(getClass().getResource("/com.University.TempPaper/HomeWindow.fxml"));
             loader.setLocation(getClass().getResource("/com.University.TempPaper/AddAssemblageName.fxml"));
 
             try {
@@ -149,57 +148,51 @@ public class InsertController extends Editor {
 
             SelectionModel selectionGenreModel = listViewGenre.getSelectionModel();
             if(selectionAssemblageModel.getSelectedItem() == null) {
-                ExceptionMessageController.exceptionMessage = "Не вибрана збірка для композиції";
+                String message = "Не вибрана збірка для композиції";
+                LOG.warn(message);
+                ExceptionMessageController.exceptionMessage = message;
                 ExceptionMessageController.start();
             }
             else if(selectionGenreModel.getSelectedItem() == null) {
-                ExceptionMessageController.exceptionMessage = "Не вибрані жанри для композиції";
+                String message = "Не вибрані жанри для композиції";
+                LOG.warn(message);
+                ExceptionMessageController.exceptionMessage = message;
                 ExceptionMessageController.start();
             } else {
-
                 Composition composition = new Composition();
+                String message;
+                if (textFieldName.getText() == "") {
+                    message = "Поле імені композиції є пустим!";
+                } else if( textFieldPerformer.getText() == "") {
+                    message = "Поле назва виконавця є пустим!";
+                }else if( textFieldDuration.getText() == "") {
+                    message = "Поле тривалість композиції є пустим!";
+                } else {
 
-                try {
-                    if(textFieldName.getText() == "" && textFieldPerformer.getText() == "")
-                        throw new VariableIsNull("Поля є пустими, заповніть їх!");
-                } catch (VariableIsNull e) {
-                    ExceptionMessageController.exceptionMessage = e.getMessage();
-                    ExceptionMessageController.start();
+                    composition.setName(textFieldName.getText());
+                    composition.setDuration(Double.parseDouble(textFieldDuration.getText()));
+                    composition.setPerformer(textFieldPerformer.getText());
+                    composition.setAssemblageName((String) selectionAssemblageModel.getSelectedItem());
+
+                    LinkedList linkedList = new LinkedList<String>();
+                    linkedList.add((String) selectionGenreModel.getSelectedItem());
+                    composition.setGenres(linkedList);
+
+                    try {
+                        executeCommand(new InsertCompositionCommand(editor, composition));
+                        ExceptionMessageController.exceptionMessage = "Композиція додана в збірку успішно!";
+                        ExceptionMessageController.start();
+                    } catch (StatementDontReturnValueException | ZeroRowChangedException | VariableIsNull e) {
+                        ExceptionMessageController.exceptionMessage = e.getMessage();
+                        ExceptionMessageController.start();
+                    }
+                    return;
                 }
-
-                composition.setName(textFieldName.getText());
-                composition.setDuration(Double.parseDouble(textFieldDuration.getText()));
-            composition.setPerformer(textFieldPerformer.getText());
-                composition.setAssemblageName((String) selectionAssemblageModel.getSelectedItem());
-
-                LinkedList linkedList = new LinkedList<String>();
-                linkedList.add((String) selectionGenreModel.getSelectedItem());
-                composition.setGenres(linkedList);
-
-
-//                AnimationTimer animationTimer = new AnimationTimer() {
-//                    @Override
-//                    public void handle(long l) {
-//
-//                    }
-//                }
-
-//            String assemblageName = (String) selectionAssemblageModel.getSelectedItem();
-//            String genreName = (String) selectionGenreModel.getSelectedItem();
-
-                try {
-                    executeCommand(new InsertCompositionCommand(editor, composition));
-                    ExceptionMessageController.exceptionMessage = "Композиція додана в збірку успішно!";
-                    ExceptionMessageController.start();
-                } catch (StatementDontReturnValueException | ZeroRowChangedException | VariableIsNull e) {
-                    ExceptionMessageController.exceptionMessage = e.getMessage();
-                    ExceptionMessageController.start();
-                }
-
+                LOG.warn(message);
+                ExceptionMessageController.exceptionMessage = message;
+                ExceptionMessageController.start();
             }
         });
-
     }
-
 }
 
